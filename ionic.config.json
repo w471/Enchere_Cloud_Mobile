@@ -1,0 +1,7 @@
+{
+  "name": "andrana",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
