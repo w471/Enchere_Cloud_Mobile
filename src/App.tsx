@@ -1,5 +1,5 @@
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp,IonButton,IonCol,IonContent,IonGrid,IonHeader,IonInput,IonItem,IonLabel,IonRouterOutlet, IonRow, IonTitle, IonToolbar, setupIonicReact } from '@ionic/react';
+import { IonApp,IonButton,IonCol,IonContent,IonGrid,IonHeader,IonIcon,IonInput,IonItem,IonLabel,IonRouterOutlet, IonRow, IonTabBar, IonTabButton, IonTabs, IonTitle, IonToolbar, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
 /* Core CSS required for Ionic components to work properly */
@@ -21,51 +21,45 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import { useRef } from 'react';
-import Home from './pages/Home';
-import ViewMessage from './pages/ViewMessage';
+
 import LoginAdmin from './components/LoginAdmin';
 import ListeVehicule from './components/ListeVehicule';
 import DetailVehicule from './components/DetailsVehicule';
 import DetailsVehicule from './components/DetailsVehicule';
+import { airplane, albums, home } from 'ionicons/icons';
+import Login from './pages/Login';
+import Accueil from './pages/Accueil';
+import RechargeAccount from './pages/RechargeAccount';
+import AddAuction from './pages/AddAuction';
 
 setupIonicReact();
 
 const App: React.FC = () => (
-  // Router for message
-  // <IonApp>
-  //   <IonReactRouter>
-  //     <IonRouterOutlet>
-  //       <Route path="/" exact={true}>
-  //         <Redirect to="/home" />
-  //       </Route>
-  //       <Route path="/home" exact={true}>
-  //         <Home />
-  //       </Route>
-  //       <Route path="/message/:id">
-  //          <ViewMessage />
-  //       </Route>
-  //     </IonRouterOutlet>
-  //   </IonReactRouter>
-  // </IonApp>
+  <IonApp>
+      <IonReactRouter>
+      <IonTabs>
+        <IonRouterOutlet>
+             <Route path="/login" component={Login} />
+             <Route path="/home" component={Accueil} />
+             <Route path="/rechargeAccount" component={RechargeAccount} />
+             <Route path="/addAuction" component={AddAuction} />
+              <Redirect exact from="/" to="/login" />
+        </IonRouterOutlet>
 
-  <IonReactRouter>
-      <IonRouterOutlet>
-      <Route path="/home" exact={true}>
-        <Home />
-      </Route>
-
-      <Route path="/message/:id">
-        <ViewMessage />
-      </Route>
+      <IonTabBar slot="bottom">
+          <IonTabButton tab="tab1" href="/home">
+            <IonIcon icon={home} />
+            <IonLabel>Accueil</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="tab2" href="/addAuction">
+            <IonIcon icon={albums} />
+            <IonLabel>Add auction</IonLabel>
+          </IonTabButton>
+        </IonTabBar>
       
-        <Route path="/login:idVehicule" component={LoginAdmin} />
-        <Route path="/listeVehicule" component={ListeVehicule} />
-        <Route path="/detailsVehicule/:id" component={DetailsVehicule} />
-        <Route path="/detailVehicule" component={DetailVehicule} />
-        {/* when a user visits the root URL of the app ("/"), it redirects them to the "/dashboard" URL. */}
-        <Redirect exact from="/" to="/listeVehicule" />
-      </IonRouterOutlet>
+        </IonTabs>
     </IonReactRouter>
+    </IonApp>
 
 );
 
