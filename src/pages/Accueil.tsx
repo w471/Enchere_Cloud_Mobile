@@ -1,80 +1,84 @@
 import { IonButton, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonItem, IonPage, IonRow, IonToolbar } from "@ionic/react";
 import { home } from "ionicons/icons";
+import React, { useEffect, useState } from "react";
 import { FC } from "react";
 import { useHistory } from "react-router";
+import EnchereStatus from "../components/EnchereStatus";
+import { getUrl } from "../data/Url";
+import Header from "../components/Header";
 
 const Accueil:FC = () => {
-    const history = useHistory();
-    const checkSolde = () =>{
-        history.push("/rechargeAccount");
-    }
+    const [allPossesed, setAllPossesed] = useState([]);
+    const [allInvolved, setAllInvolved] = useState([]);
+
+    useEffect( ()=> {
+        fetch(getUrl()+"/clients/getPossesed?idPersonne="+localStorage.getItem("idPersonne"), {
+            method: "GET"
+        })
+        .then ( (response:any) => {
+            if(response.status==200)
+                return response.json();
+
+            else
+                throw new Error(response);
+        })
+        .then( (json) => {
+            setAllPossesed(json)
+            console.log(json);
+        })
+        .catch( error =>{
+            alert(error);
+        })
+
+        fetch(getUrl()+"/clients/getInvolved?idPersonne="+localStorage.getItem("idPersonne"), {
+            method: "GET"
+        })
+        .then ( (response:any) => {
+            if(response.status==200)
+                return response.json();
+
+            else
+                throw new Error(response);
+        })
+        .then( (json) => {
+            setAllInvolved(json);
+            console.log(json);
+        })
+        .catch( error =>{
+            alert(error);
+        })
+    },[])
 
     return(
         <IonPage>
-            <IonHeader> 
-            <IonToolbar>
-                <IonRow>
-                    <IonGrid>Page title</IonGrid>
-                    <IonGrid>
-                        <IonButton onClick={checkSolde} >Solde :  500£</IonButton>
-                    </IonGrid>
-                </IonRow>
-            </IonToolbar>
-            </IonHeader> 
+           <Header title="Accueil" />
 
-            <IonContent className='ion-padding'>
+            {/* <IonRow> */}
+               {/* <IonItem> */}
+               <IonGrid>
+                    <h3>Enchères possedées</h3>
+                    {
+                        allPossesed.map( (ind:any,index:number) =>(
+                            <EnchereStatus key={index} description={ind.description} price={ind.price} status={ind.status} />
+                        ))
+                    }
+                </IonGrid>
+               {/* </IonItem> */}
+
+                {/* <IonItem> */}
                 <IonGrid>
-                    <IonRow>
-                        <IonCol>
-                        <IonRow>
-                                <h2>Enchères possédées</h2>
-                            </IonRow>            
+                <h3>Enchères participées</h3>
+            {
+                allInvolved.map( (ind:any,index:number) =>(
+                    <EnchereStatus key={index} description={ind.description} price={ind.price} status={ind.status} />
+                ))
+            }
+                </IonGrid>
+                {/* </IonItem> */}
+            {/* </IonRow> */}
+            
 
-                            <IonRow>
-                                <IonItem>
-                                    <IonGrid>
-                                        <IonRow>Product name</IonRow>
-                                        <IonRow>Current Price</IonRow>
-                                    </IonGrid>
-                                    <IonGrid>
-                                        Fini
-                                    </IonGrid>
-                                </IonItem>
-                            </IonRow>
-
-                            <br />
-
-                            <IonRow>
-                                <IonItem>
-                                    <IonGrid>
-                                        <IonRow>Product name</IonRow>
-                                        <IonRow>Current Price</IonRow>
-                                    </IonGrid>
-                                    <IonGrid>
-                                        En cours
-                                    </IonGrid>
-                                </IonItem>
-                            </IonRow>
-
-                            <br />
-
-                            <IonRow>
-                                <IonItem>
-                                    <IonGrid>
-                                        <IonRow>Product name</IonRow>
-                                        <IonRow>Current Price</IonRow>
-                                    </IonGrid>
-                                    <IonGrid>
-                                        Fini
-                                    </IonGrid>
-                                </IonItem>
-                            </IonRow>
-
-                         
-                        </IonCol>
-                    </IonRow>
-                </IonGrid>  
-            </IonContent>
+            
 
         </IonPage>
     );

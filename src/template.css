@@ -1,0 +1,33 @@
+/* body{
+    background-color:blanchedalmond;
+}
+ 
+ion-col {
+    background-color:aliceblue;
+    color: #fff;
+    text-align: center;
+    size: auto;
+  }
+
+
+ion-button{
+ background:coral;
+  --color: white;
+  font-size: 18px;
+  border-radius: 10px;
+}
+
+ion-title{
+    font-size: medium;
+    color: teal;
+}
+
+.md ion-grid{
+    font-size: 15px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+h2{
+    color: darkcyan;
+}
+  */

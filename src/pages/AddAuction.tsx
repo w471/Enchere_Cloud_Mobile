@@ -3,6 +3,7 @@ import { FC, useRef, useState } from "react";
 import { useHistory } from "react-router";
 import {Enchere} from '../data/Enchere';
 import {Camera,CameraResultType, CameraSource} from '@capacitor/camera';
+import Header from "../components/Header";
 
 const AddAuction:FC = () => {
     const history = useHistory();
@@ -79,31 +80,17 @@ const AddAuction:FC = () => {
         })
     }
 
-    const checkSolde = () =>{
-        history.push("/rechargeAccount");
-    }
+    
     
     return(
         <IonPage>
-            <IonHeader> 
-            <IonToolbar>
-                <IonRow>
-                    <IonGrid>Page title</IonGrid>
-                    <IonGrid>
-                        <IonButton onClick={checkSolde} >Solde :  500£</IonButton>
-                    </IonGrid>
-                </IonRow>
-            </IonToolbar>
-            </IonHeader> 
+            <Header title="Ajouter une enchère" />
 
             <IonContent className='ion-padding'>
                 <IonGrid>
                     <IonRow>
                         <IonCol>
-                            <IonRow>
-                                <h2>Ajouter une enchère</h2>
-                            </IonRow>
-
+                            
                             
                             <IonRow>                            
                                 <IonItem>
@@ -150,7 +137,7 @@ const AddAuction:FC = () => {
 
                             {picture && 
                             <IonRow>                            
-                                    <img src={`data:assets/images/png;base64,${picture.base64String}`} alt={"No image avalaible"} width="50%" />
+                                    <img src={`data:assets/images/${picture.format};base64,${picture.base64String}`} alt={"No image avalaible"} width="50%" />
                             </IonRow>  
                                 
                             }

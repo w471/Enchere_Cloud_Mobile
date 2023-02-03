@@ -30,7 +30,6 @@ import RechargeAccount from './pages/RechargeAccount';
 import AddAuction from './pages/AddAuction';
 import Inscription from './pages/Inscription';
 
-import EnchereList from './pages/EnchereList';
 
 setupIonicReact();
 
@@ -41,7 +40,6 @@ const App: React.FC = () => (
         <IonRouterOutlet>
              <Route path="/login" component={Login} />
              <Route path="/inscription" component={Inscription} />
-             <Route path="/mainList" component={EnchereList} />
              <Route path="/home" component={Accueil} />
              <Route path="/rechargeAccount" component={RechargeAccount} />
              <Route path="/addAuction" component={AddAuction} />

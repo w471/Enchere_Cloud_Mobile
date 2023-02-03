@@ -1,26 +1,29 @@
 import { IonButton, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonItem, IonLabel, IonPage, IonRow, IonText, IonTitle, IonToolbar, useIonViewWillEnter } from "@ionic/react";
+import React, { useState } from "react";
 import { FC, useRef } from "react";
 import { useHistory } from "react-router";
 import { getUrl } from "../data/Url";
+//import '.component/Components.tsx'
 
 const Login:FC = () => {
+    const [error, setError] = useState<any>(null);
     const identifiant = useRef<HTMLIonInputElement>(null);
     const password = useRef<HTMLIonInputElement>(null);
     const history = useHistory();
 
-    // useIonViewWillEnter( ()=>{
-    //     if(localStorage.getItem("tokenClient")!=undefined){
-    //         history.push("/home");
-    //     }
-    // })
+    useIonViewWillEnter( ()=>{
+        if(localStorage.getItem("Authorization")!=undefined){
+            history.push("/home");
+        }
+    })
     
 
   const checkLogin = () => {    
         // the ref we obtained can't be null since we already pointed it
-        const emailInput = identifiant.current!.value;
-        const passwordInput:any = password.current!.value;
+        const inputIdentifiant = identifiant.current!.value;
+        const inputLogin = password.current!.value;
         
-        if(emailInput=='' || passwordInput=='' )
+        if(inputLogin=='' || inputIdentifiant=='' )
         return;
 
     // Send the login to the api 
@@ -30,35 +33,41 @@ const Login:FC = () => {
             "Content-Type": "application/json",
         },
         body:JSON.stringify({
-            email:emailInput,
-            password: passwordInput
+            email:inputIdentifiant,
+            password: inputLogin
         })
         })
-        .then((response:any) => {
-            if (response.status === 500) 
-                throw new Error(response);
-            else 
-                return response.json();
+        .then((response) => {
+            if (response.status === 500) {
+                alert("Mot de passe non identifier");
+                setError("Mot de passe non identifier");
+            } else return response.json();
         })
         .then((token) => {
-            localStorage.setItem("tokenClient",token[0])
-            localStorage.setItem("idPersonne",token[1]);
-            history.push("/home");
-        })
-        .catch( (error) =>{
-            alert("Mot de passe non identifier");
-        })
+            if(token!=undefined){
+                localStorage.setItem("idPersonne",token[1])    
+                localStorage.setItem("Authorization",'Bearer'+token[0])
+                history.push("/home");         
+            }
+        });
 
         
     };
     
     return(
-        <IonPage>
-            
+        <IonPage class="bg-warning p-2 text-dark bg-opacity-25">
+             <IonHeader> 
+            <IonToolbar>
+                <IonRow>
+                    <IonGrid>Login</IonGrid>
+                </IonRow>
+            </IonToolbar>
+            </IonHeader> 
 
             <IonContent className='ion-padding'>
             <IonGrid>
                 <IonRow>
+                    
                 <IonCol>
 
                     <IonRow>
@@ -67,7 +76,7 @@ const Login:FC = () => {
                         <IonInput ref={identifiant} value="jean@gmail.com"></IonInput>
                     </IonItem>
                     </IonRow>
-
+                    <br/>
                     <IonRow>
                     <IonItem>
                         <IonLabel position='floating'>Password</IonLabel>
@@ -75,17 +84,29 @@ const Login:FC = () => {
                     </IonItem>
                     </IonRow>
 
-
+                    <br/>
                     <IonRow>
                     <IonCol>
-                        <IonButton onClick={checkLogin}>Se connecter</IonButton>
+                        <IonButton class="btn btn-info" onClick={checkLogin}>
+                            <div className="bouton">
+                            Se connecter
+                            </div>   
+                            </IonButton>
                     </IonCol>
                     </IonRow>
 
+                    {error && <IonRow>
+                    <IonItem>
+                        <IonLabel >{error}</IonLabel>
+                    </IonItem>
+                    </IonRow>}
+
+
                     <IonRow>
-                        <IonLabel position='floating'><a href="/inscription">S'inscrire</a></IonLabel>
+                        <IonLabel  position='floating'><a href="/inscription">Not have account yet</a></IonLabel>
                     </IonRow>
 
+                    
 
                 </IonCol>
                 </IonRow>

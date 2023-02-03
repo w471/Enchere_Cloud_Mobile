@@ -9,8 +9,9 @@ const EnchereStatus:FC<{description:string;price:number;status:number}> = (props
         <IonRow>
             <IonItem>
                 <IonGrid>
-                    <IonRow>{props.description}</IonRow>
-                    <IonRow>{props.price}</IonRow>
+                    <IonRow>Description : {props.description}</IonRow>
+                    <hr></hr>
+                    <IonRow>Prix : {props.price}</IonRow>
                 </IonGrid>
                 <IonGrid>
                     {myStatus[props.status]}

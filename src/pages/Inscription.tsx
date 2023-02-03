@@ -44,7 +44,13 @@ const Inscription:FC = () => {
 
   return (
     <IonPage>
-            
+      <IonHeader> 
+            <IonToolbar>
+                <IonRow>
+                    <IonGrid>Inscription</IonGrid>
+                </IonRow>
+            </IonToolbar>
+            </IonHeader> 
 
     <IonContent className='ion-padding'>
     <IonGrid>
