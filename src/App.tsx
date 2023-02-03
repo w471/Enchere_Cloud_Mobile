@@ -22,15 +22,15 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import { useRef } from 'react';
 
-import LoginAdmin from './components/LoginAdmin';
-import ListeVehicule from './components/ListeVehicule';
-import DetailVehicule from './components/DetailsVehicule';
-import DetailsVehicule from './components/DetailsVehicule';
+
 import { airplane, albums, home } from 'ionicons/icons';
 import Login from './pages/Login';
 import Accueil from './pages/Accueil';
 import RechargeAccount from './pages/RechargeAccount';
 import AddAuction from './pages/AddAuction';
+import Inscription from './pages/Inscription';
+
+import EnchereList from './pages/EnchereList';
 
 setupIonicReact();
 
@@ -40,6 +40,8 @@ const App: React.FC = () => (
       <IonTabs>
         <IonRouterOutlet>
              <Route path="/login" component={Login} />
+             <Route path="/inscription" component={Inscription} />
+             <Route path="/mainList" component={EnchereList} />
              <Route path="/home" component={Accueil} />
              <Route path="/rechargeAccount" component={RechargeAccount} />
              <Route path="/addAuction" component={AddAuction} />

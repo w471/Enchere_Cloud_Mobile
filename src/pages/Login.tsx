@@ -1,47 +1,50 @@
 import { IonButton, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonItem, IonLabel, IonPage, IonRow, IonText, IonTitle, IonToolbar, useIonViewWillEnter } from "@ionic/react";
 import { FC, useRef } from "react";
 import { useHistory } from "react-router";
+import { getUrl } from "../data/Url";
 
 const Login:FC = () => {
     const identifiant = useRef<HTMLIonInputElement>(null);
     const password = useRef<HTMLIonInputElement>(null);
     const history = useHistory();
 
-    useIonViewWillEnter( ()=>{
-        if(localStorage.getItem("Authorization")!=undefined){
-            history.push("/home");
-        }
-    })
+    // useIonViewWillEnter( ()=>{
+    //     if(localStorage.getItem("tokenClient")!=undefined){
+    //         history.push("/home");
+    //     }
+    // })
     
 
   const checkLogin = () => {    
         // the ref we obtained can't be null since we already pointed it
-        const inputIdentifiant = identifiant.current!.value;
-        const inputLogin = password.current!.value;
+        const emailInput = identifiant.current!.value;
+        const passwordInput:any = password.current!.value;
         
-        if(inputLogin=='' || inputIdentifiant=='' )
+        if(emailInput=='' || passwordInput=='' )
         return;
 
     // Send the login to the api 
-        fetch("http://etu1540etu1568flotteavion-production.up.railway.app/admins/checkLogin", {
+        fetch(getUrl()+"/clients/checkLogin", {
         method:"POST",
         headers:{
             "Content-Type": "application/json",
         },
         body:JSON.stringify({
-            identifiant:inputIdentifiant,
-            pwd: inputLogin
+            email:emailInput,
+            password: passwordInput
         })
         })
         .then((response) => {
             if (response.status === 500) {
-            alert("Mot de passe non identifier");
-            } else return response.text();
+                alert("Mot de passe non identifier");
+            } 
+            else 
+                return response.json();
         })
         .then((token) => {
-            if(token!=undefined){                
-                localStorage.setItem("Authorization",'Bearer'+token)            
-            }
+            localStorage.setItem("tokenClient",token[0])
+            localStorage.setItem("idPersonne",token[1]);
+            history.push("/home");
         });
 
         
@@ -59,7 +62,7 @@ const Login:FC = () => {
                     <IonRow>
                     <IonItem>
                         <IonLabel position='floating'>Nom</IonLabel>
-                        <IonInput ref={identifiant} value="nomAdmin"></IonInput>
+                        <IonInput ref={identifiant} value="jean@gmail.com"></IonInput>
                     </IonItem>
                     </IonRow>
 
@@ -78,7 +81,7 @@ const Login:FC = () => {
                     </IonRow>
 
                     <IonRow>
-                        <IonLabel position='floating'><a href="#">Not have account yet</a></IonLabel>
+                        <IonLabel position='floating'><a href="/inscription">S'inscrire</a></IonLabel>
                     </IonRow>
 
 

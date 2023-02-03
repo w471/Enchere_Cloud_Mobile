@@ -2,16 +2,29 @@ import { IonButton, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, I
 import { FC, useRef, useState } from "react";
 import { useHistory } from "react-router";
 import {Enchere} from '../data/Enchere';
+import {Camera,CameraResultType, CameraSource} from '@capacitor/camera';
 
 const AddAuction:FC = () => {
     const history = useHistory();
     const [allCategorie, setallCategorie] = useState([]);
+    const [picture,setPicture] = useState<any>();
 
     const description = useRef<HTMLIonTextareaElement>(null);
     const startPrice = useRef<HTMLIonInputElement>(null);
     const duration = useRef<HTMLIonInputElement>(null);
     const idCategorie = useRef<HTMLIonSelectElement>(null);
 
+    const takePicture = async () => {
+        const photo = await Camera.getPhoto({
+            quality : 90,
+            allowEditing : false,
+            resultType : CameraResultType.Base64,
+            source : CameraSource.Photos
+        })
+
+        console.log(photo);
+        setPicture(photo);
+    }
 
     useIonViewWillEnter( ()=>{
         fetch("http://localhost:8080/categories", {
@@ -45,7 +58,8 @@ const AddAuction:FC = () => {
                 duration : duration!.current!.value,
                 idCategorie : idCategorie!.current!.value,
                 startPrice : startPrice!.current!.value,
-                idLauncher : localStorage.getItem("idPersonne")
+                idLauncher : localStorage.getItem("idPersonne"),
+                image : picture.base64String
             })
         })
         .then((response:any)=>{
@@ -114,7 +128,7 @@ const AddAuction:FC = () => {
                             
                                 <IonGrid>
                                 <IonItem>
-                                    <IonLabel position='floating'>Duration</IonLabel>
+                                    <IonLabel position='floating'>Duration en heure</IonLabel>
                                     <IonInput ref={duration} ></IonInput>
                                 </IonItem>
                                 </IonGrid>
@@ -128,7 +142,20 @@ const AddAuction:FC = () => {
                             
                             </IonRow>    
 
+                            <IonRow>                            
+                                <IonItem>
+                                    <IonButton onClick={takePicture} >Take picture</IonButton>
+                                </IonItem>
+                            </IonRow>
 
+                            {picture && 
+                            <IonRow>                            
+                                    <img src={`data:assets/images/png;base64,${picture.base64String}`} alt={"No image avalaible"} width="50%" />
+                            </IonRow>  
+                                
+                            }
+
+                            
                              
 
                             <IonRow>
