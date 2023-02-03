@@ -34,10 +34,9 @@ const Login:FC = () => {
             password: passwordInput
         })
         })
-        .then((response) => {
-            if (response.status === 500) {
-                alert("Mot de passe non identifier");
-            } 
+        .then((response:any) => {
+            if (response.status === 500) 
+                throw new Error(response);
             else 
                 return response.json();
         })
@@ -45,7 +44,10 @@ const Login:FC = () => {
             localStorage.setItem("tokenClient",token[0])
             localStorage.setItem("idPersonne",token[1]);
             history.push("/home");
-        });
+        })
+        .catch( (error) =>{
+            alert("Mot de passe non identifier");
+        })
 
         
     };
